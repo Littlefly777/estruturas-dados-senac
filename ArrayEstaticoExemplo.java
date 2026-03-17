@@ -1,6 +1,6 @@
 public class ArrayEstaticoExemplo {
     
-}
+
     public static void main(String[] args) {
         // 1) DECLARACAO: cria a variavel que vai apontar para um array de int.
         int[] numeros;
@@ -18,6 +18,10 @@ public class ArrayEstaticoExemplo {
         tamanho = inserirNoFim(numeros, tamanho, 10);
         tamanho = inserirNoFim(numeros, tamanho, 20);
         tamanho = inserirNoFim(numeros, tamanho, 30);
+        tamanho = inserirNoFim(numeros, tamanho, 40);
+        tamanho = inserirNoFim(numeros, tamanho, 50);
+        tamanho = inserirNoFim(numeros, tamanho, 60);
+        tamanho = inserirNoFim(numeros, tamanho, -70);
         exibirComIndice(numeros, tamanho);
 
         // 4) INSERIR EM POSICAO (precisa deslocar para a direita).
@@ -35,6 +39,9 @@ public class ArrayEstaticoExemplo {
         int indice = buscar(numeros, tamanho, 30);
         System.out.println("Valor 30 encontrado no indice: " + indice);
 
+        int maior = buscarMaior(numeros, tamanho);
+        System.out.println("Maior valor: " + maior);
+
         // ---- 3 formas de exibir ----
         exibirComIndice(numeros, tamanho); // mostra indice + valor
         exibirForEach(numeros, tamanho);   // mostra so o valor (for-each)
@@ -50,18 +57,32 @@ public class ArrayEstaticoExemplo {
      * @param tamanho quantidade atual de elementos em uso
      * @param valor valor a inserir
      * @return novo tamanho apos a insercao; se estiver cheio, retorna o mesmo tamanho
+     *
      */
+
+    public static boolean estaCheio(int[] array, int tamanho) {
+        return tamanho >= array.length;
+    }
+
+    public static boolean estaVazio(int tamanho) {
+        return tamanho == 0;
+    }
+
     public static int inserirNoFim(int[] array, int tamanho, int valor) {
-        // Verifica se ha espaco disponivel.
-        if (tamanho >= array.length) {
+        // BLOQUEIO DE VALORES NEGATIVOS
+        if (valor < 0) {
+            System.out.println("Valor negativo nao permitido: " + valor);
+            return tamanho;
+        }
+    
+        // USA O METODO estaCheio
+        if (estaCheio(array, tamanho)) {
             System.out.println("Array cheio. Nao foi possivel inserir " + valor);
             return tamanho;
         }
-
-        // Escreve o valor na primeira posicao livre (que e 'tamanho').
+    
         array[tamanho] = valor;
-
-        // Retorna o novo tamanho aumentado em 1.
+    
         return tamanho + 1;
     }
 
@@ -105,7 +126,7 @@ public class ArrayEstaticoExemplo {
      * @return novo tamanho apos a remocao; em caso invalido, retorna o tamanho original
      */
     public static int removerPorIndice(int[] array, int tamanho, int indice) {
-        if (tamanho == 0) {
+        if (estaVazio(tamanho)) {
             System.out.println("Array vazio. Nada para remover.");
             return tamanho;
         }
@@ -124,7 +145,7 @@ public class ArrayEstaticoExemplo {
     }
 
     /**
-     * Busca um valor no trecho ocupado do array ([0, tamanho)).
+     * Busca um valor no trecho ocupado do array ((0, tamanho)).
      *
      * Complexidade: O(n).
      *
@@ -140,6 +161,23 @@ public class ArrayEstaticoExemplo {
             }
         }
         return -1;
+    }
+
+    public static int buscarMaior(int[] array, int tamanho) {
+        if (estaVazio(tamanho)) {
+            System.out.println("Array vazio. Nao ha maior valor.");
+            return -1;
+        }
+    
+        int maior = array[0];
+    
+        for (int i = 1; i < tamanho; i++) {
+            if (array[i] > maior) {
+                maior = array[i];
+            }
+        }
+    
+        return maior;
     }
 
     // -------------------------------------------------
@@ -196,3 +234,5 @@ public class ArrayEstaticoExemplo {
             i++;                    // avanca para o proximo
         }
     }
+}
+
